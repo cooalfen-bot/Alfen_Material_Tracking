@@ -1,0 +1,8 @@
+{
+  "name": "alfen-material-tracking",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Alfen site material tracking: factory booking, site receipt and fitting verification with photos.",
+  "scripts": { "test": "node test/run.js" },
+  "engines": { "node": "22.x" }
+}
