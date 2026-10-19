@@ -1,8 +1,17 @@
 'use strict';
 const crypto = require('crypto');
 
-const REST_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
-const REST_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+// Vercel's Upstash integration may add a custom prefix (for example STORAGE_KV_REST_API_URL), so match by suffix.
+function findEnv(suffixes) {
+  for (const s of suffixes) {
+    if (process.env[s]) return process.env[s];
+    const k = Object.keys(process.env).find((n) => n.endsWith('_' + s) && process.env[n]);
+    if (k) return process.env[k];
+  }
+  return '';
+}
+const REST_URL = findEnv(['KV_REST_API_URL', 'UPSTASH_REDIS_REST_URL']);
+const REST_TOKEN = findEnv(['KV_REST_API_TOKEN', 'UPSTASH_REDIS_REST_TOKEN']);
 
 class HttpError extends Error {
   constructor(status, message, code) {
